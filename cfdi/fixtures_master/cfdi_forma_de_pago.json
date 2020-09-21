@@ -1,0 +1,162 @@
+[
+ {
+  "clave": "01", 
+  "descripcion": "Efectivo", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.656109", 
+  "name": "01"
+ }, 
+ {
+  "clave": "02", 
+  "descripcion": "Cheque nominativo", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.659331", 
+  "name": "02"
+ }, 
+ {
+  "clave": "03", 
+  "descripcion": "Transferencia electr\u00f3nica de fondos", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.666093", 
+  "name": "03"
+ }, 
+ {
+  "clave": "04", 
+  "descripcion": "Tarjeta de cr\u00e9dito", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.670476", 
+  "name": "04"
+ }, 
+ {
+  "clave": "05", 
+  "descripcion": "Monedero electr\u00f3nico", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.673380", 
+  "name": "05"
+ }, 
+ {
+  "clave": "06", 
+  "descripcion": "Dinero electr\u00f3nico", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.676185", 
+  "name": "06"
+ }, 
+ {
+  "clave": "08", 
+  "descripcion": "Vales de despensa", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.679221", 
+  "name": "08"
+ }, 
+ {
+  "clave": "12", 
+  "descripcion": "Daci\u00f3n en pago", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.683590", 
+  "name": "12"
+ }, 
+ {
+  "clave": "13", 
+  "descripcion": "Pago por subrogaci\u00f3n", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.688652", 
+  "name": "13"
+ }, 
+ {
+  "clave": "14", 
+  "descripcion": "Pago por consignaci\u00f3n", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.693733", 
+  "name": "14"
+ }, 
+ {
+  "clave": "15", 
+  "descripcion": "Condonaci\u00f3n", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.698754", 
+  "name": "15"
+ }, 
+ {
+  "clave": "17", 
+  "descripcion": "Compensaci\u00f3n", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.705289", 
+  "name": "17"
+ }, 
+ {
+  "clave": "23", 
+  "descripcion": "Novaci\u00f3n", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.708978", 
+  "name": "23"
+ }, 
+ {
+  "clave": "24", 
+  "descripcion": "Confusi\u00f3n", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.712115", 
+  "name": "24"
+ }, 
+ {
+  "clave": "25", 
+  "descripcion": "Remisi\u00f3n de deuda", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.715162", 
+  "name": "25"
+ }, 
+ {
+  "clave": "26", 
+  "descripcion": "Prescripci\u00f3n o caducidad", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.718174", 
+  "name": "26"
+ }, 
+ {
+  "clave": "27", 
+  "descripcion": "A satisfacci\u00f3n del acreedor", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.721118", 
+  "name": "27"
+ }, 
+ {
+  "clave": "28", 
+  "descripcion": "Tarjeta de d\u00e9bito", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.723665", 
+  "name": "28"
+ }, 
+ {
+  "clave": "29", 
+  "descripcion": "Tarjeta de servicios", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.726101", 
+  "name": "29"
+ }, 
+ {
+  "clave": "99", 
+  "descripcion": "Por definir", 
+  "docstatus": 0, 
+  "doctype": "CFDI Forma de Pago", 
+  "modified": "2017-12-01 16:14:51.728530", 
+  "name": "99"
+ }
+]
