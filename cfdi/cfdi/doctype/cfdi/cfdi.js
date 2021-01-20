@@ -171,7 +171,7 @@ frappe.ui.form.on('CFDI', {
 						cur_frm.set_value("tipo_de_comprobante", v.tipo_de_comprobante);
 						cur_frm.set_value("metodo_pago", v.metodo_pago);
 						cur_frm.set_value("lugar_expedicion", v.lugar_expedicion);
-						cur_frm.set_value("uso_cfdi", v.uso_cfdi);
+//						cur_frm.set_value("uso_cfdi", v.uso_cfdi); esta modificando todos los sales invoice
 						cur_frm.set_value("no_certificado", v.no_certificado);
 						cur_frm.set_value("nombre_emisor", v.nombre_emisor);
 						cur_frm.set_value("rfc_emisor", v.rfc_emisor);

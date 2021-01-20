@@ -182,6 +182,9 @@ def genera_xml(docname):
   notieneiva = 0
   c = frappe.get_doc("CFDI", docname)
   cant = len(c.items)
+  mytime = datetime.strptime('0800','%H%M').time()
+  #fecha_actual = datetime.combine(c.posting_date,mytime).isoformat()[0:19] #dacosta - para hacer que se timbre con la fecha de posting_date
+
   fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
   # fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
   # fecha_obj = datetime.strptime(c.creation, "%Y-%m-%d %H:%M:%S.%f")
@@ -206,7 +209,7 @@ def genera_xml(docname):
   # nombre_receptor = c.customer_name.encode('ascii', 'ignore').decode('ascii')
   # nombre_receptor = c.customer_name.encode('UTF-8', 'ignore')
   # nombre_receptor = c.customer_name.decode('UTF-8')
-  nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
+  nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
   uso_cfdi = c.uso_cfdi
 
   tipo = []
@@ -358,7 +361,7 @@ def issue_pago(url, token, docname, version,user_id,user_password,folder,nombre_
     return response.json()
 
 def genera_xml_pago(docname, url,user_id,user_password,folder,nombre_emisor,no_certificado):
-    Fecha = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
+    Fecha = (datetime.now()- timedelta(minutes=480)).isoformat()[0:19]
     c = frappe.get_doc("Payment Entry", docname)
     #si = frappe.get_doc(tipo, invoice)
 
@@ -373,7 +376,8 @@ def genera_xml_pago(docname, url,user_id,user_password,folder,nombre_emisor,no_c
     NombreReceptor = c.party_name
     LugarExpedicion = c.lugar_expedicion
 
-    FechaContabilizacion = datetime.combine(c.posting_date,datetime.min.time()).isoformat()[0:19]
+    mytime = datetime.strptime('1200','%H%M').time()
+    FechaContabilizacion = datetime.combine(c.posting_date,mytime).isoformat()[0:19]
 
     Serie = c.naming_series.replace('-','')
     Folio = c.name.replace(Serie,'')
@@ -401,7 +405,7 @@ def genera_xml_pago(docname, url,user_id,user_password,folder,nombre_emisor,no_c
         <cfdi:Emisor Rfc="{rfc_emisor}" Nombre="{nombre_emisor}" RegimenFiscal="{RegimenFiscal}"/>
         <cfdi:Receptor Rfc="{RfcReceptor}" Nombre="{NombreReceptor}" UsoCFDI="P01"/>
         <cfdi:Conceptos>
-            <cfdi:Concepto ClaveProdServ="84111506" Cantidad="1" ClaveUnidad="ACT" Descripcion="Pago" ValorUnitario="0.000000" Importe="0.00">
+            <cfdi:Concepto ClaveProdServ="84111506" Cantidad="1" ClaveUnidad="ACT" Descripcion="Pago" ValorUnitario="0" Importe="0.00">
             </cfdi:Concepto>
         </cfdi:Conceptos>
         <cfdi:Complemento>
@@ -409,12 +413,12 @@ def genera_xml_pago(docname, url,user_id,user_password,folder,nombre_emisor,no_c
     # MonedaP= c.moneda
     TipoCambioP = c.target_exchange_rate
     MonedaP = c.paid_to_account_currency
-    if MonedaP == 'USD':
-        cfdi_pago+="""<pago10:Pago FechaPago="{FechaContabilizacion}" FormaDePagoP="{FormaDePagoP}" TipoCambioP ="{TipoCambioP}"  MonedaP="{MonedaP}"  Monto="{Monto}" NumOperacion="{NumOperacion}">
-        """.format(**locals())
+    if MonedaP != 'MXN': # Si el Pago es diferente a MXN
+        cfdi_pago+="""
+            <pago10:Pago FechaPago="{FechaContabilizacion}" FormaDePagoP="{FormaDePagoP}" TipoCambioP ="{TipoCambioP}"  MonedaP="{MonedaP}"  Monto="{Monto}" NumOperacion="{NumOperacion}">""".format(**locals())
     else:
-        cfdi_pago+="""<pago10:Pago FechaPago="{FechaContabilizacion}" FormaDePagoP="{FormaDePagoP}" MonedaP="MXN" Monto="{Monto}" NumOperacion="{NumOperacion}">
-        """.format(**locals())
+        cfdi_pago+="""
+            <pago10:Pago FechaPago="{FechaContabilizacion}" FormaDePagoP="{FormaDePagoP}" MonedaP="MXN" Monto="{Monto}" NumOperacion="{NumOperacion}">""".format(**locals())
 
     for x in c.references:
         si = frappe.get_doc('Sales Invoice', x.reference_name)
@@ -426,20 +430,46 @@ def genera_xml_pago(docname, url,user_id,user_password,folder,nombre_emisor,no_c
         IdDocumento = x.uuid
         SerieCFDI = x.reference_name
         FolioCFDI = x.reference_name
+        MetodoPago = si.metodo_pago
         ImpSaldoAnt = '%.2f' % x.outstanding_amount
         ImpPagado = '%.2f' % x.allocated_amount
         ImpSaldoInsoluto= float(ImpSaldoAnt) - float(ImpPagado)
         frappe.errprint(IdDocumento)
-        cfdi_pago+="""<pago10:DoctoRelacionado IdDocumento="{IdDocumento}" Serie="{SerieCFDI}" Folio="{FolioCFDI}" """.format(**locals())
-        if TipoCambioDR:
-            ImpSaldoAnt = '%.2f' % x.total_moneda_original
-            ImpPagado = '%.2f' % x.total_moneda_original
-            ImpSaldoInsoluto= float(ImpSaldoAnt) - float(ImpPagado)
-            cfdi_pago+="""MonedaDR="{MonedaDR}" MetodoDePagoDR="PPD" NumParcialidad="1" ImpSaldoAnt="{ImpSaldoAnt}" ImpPagado="{ImpPagado}" ImpSaldoInsoluto="{ImpSaldoInsoluto}"/>
-            """.format(**locals())
+        cfdi_pago+="""
+            <pago10:DoctoRelacionado IdDocumento="{IdDocumento}" Serie="{SerieCFDI}" Folio="{FolioCFDI}" """.format(**locals())
+        if frappe.local.site == "demo.totall.mx": # Remover if y bloque else completo una ves comprovado el correcto funcionamiento del if - AG - 18/01/21
+            if TipoCambioDR: #Solo si Factura diferente a MXN
+                frappe.msgprint('En transacciones de moneda extranjera, solo puede existir 1 factura relacionada en Referencias del Pago (Payment Reference) ')
+                ImpSaldoAnt = '%.2f' % ( flt(x.outstanding_amount) / flt(TipoCambioDR) )
+                # ImpPagado = '%.2f' % flt(Monto)
+                # ImpSaldoInsoluto= '%.2f' %  (float(ImpSaldoAnt) - float(ImpPagado))
+                if MonedaP == MonedaDR:# Si Moneda de Pago igual a Moneda de Factura - Factura y Pago USD
+                    ImpPagado = '%.2f' % flt(Monto)
+                    ImpSaldoInsoluto= '%.2f' %  (float(ImpSaldoAnt) - float(ImpPagado))
+                    cfdi_pago+="""MonedaDR="{MonedaDR}" MetodoDePagoDR="{MetodoPago}" NumParcialidad="1" ImpSaldoAnt="{ImpSaldoAnt}" ImpPagado="{ImpPagado}" ImpSaldoInsoluto="{ImpSaldoInsoluto}"/>
+                    """.format(**locals())
+                else: #Si la Moneda de Pago es Diferente a la Moneda de Factura  - Factura USD - Pago MXN
+                    ImpPagado = '%.2f' % (flt(Monto) / flt(TipoCambioDR) )
+                    ImpSaldoInsoluto= '%.2f' %  (float(ImpSaldoAnt) - float(ImpPagado))
+                    cfdi_pago+="""TipoCambioDR="{TipoCambioDR}" MonedaDR="{MonedaDR}" MetodoDePagoDR="{MetodoPago}" NumParcialidad="1" ImpSaldoAnt="{ImpSaldoAnt}" ImpPagado="{ImpPagado}" ImpSaldoInsoluto="{ImpSaldoInsoluto}"/>
+                    """.format(**locals())
+            else: # Si la Factura es en MXN
+                if MonedaP != "MXN": #Si el Pago es Diferente de MXN
+                    cfdi_pago+="""TipoCambioDR="{TipoCambioP}" MonedaDR="{MonedaDR}" MetodoDePagoDR="{MetodoPago}" NumParcialidad="1" ImpSaldoAnt="{ImpSaldoAnt}" ImpPagado="{ImpPagado}" ImpSaldoInsoluto="{ImpSaldoInsoluto}"/>
+                    """.format(**locals())
+                else:
+                    cfdi_pago+="""MonedaDR="{MonedaDR}" MetodoDePagoDR="{MetodoPago}" NumParcialidad="1" ImpSaldoAnt="{ImpSaldoAnt}" ImpPagado="{ImpPagado}" ImpSaldoInsoluto="{ImpSaldoInsoluto}"/>
+                    """.format(**locals())
         else:
-            cfdi_pago+="""MonedaDR="{MonedaDR}" MetodoDePagoDR="PPD" NumParcialidad="1" ImpSaldoAnt="{ImpSaldoAnt}" ImpPagado="{ImpPagado}" ImpSaldoInsoluto="{ImpSaldoInsoluto}"/>
-            """.format(**locals())
+            if TipoCambioDR:
+                ImpSaldoAnt = '%.2f' % x.total_moneda_original
+                ImpPagado = '%.2f' % x.total_moneda_original
+                ImpSaldoInsoluto= float(ImpSaldoAnt) - float(ImpPagado)
+                cfdi_pago+="""MonedaDR="{MonedaDR}" MetodoDePagoDR="PPD" NumParcialidad="1" ImpSaldoAnt="{ImpSaldoAnt}" ImpPagado="{ImpPagado}" ImpSaldoInsoluto="{ImpSaldoInsoluto}"/>
+                """.format(**locals())
+            else:
+                cfdi_pago+="""MonedaDR="{MonedaDR}" MetodoDePagoDR="PPD" NumParcialidad="1" ImpSaldoAnt="{ImpSaldoAnt}" ImpPagado="{ImpPagado}" ImpSaldoInsoluto="{ImpSaldoInsoluto}"/>
+                """.format(**locals())
 
 
     cfdi_pago+="""</pago10:Pago>
@@ -517,6 +547,9 @@ def genera_xml_egreso(docname):
   tieneiva = 0
   notieneiva = 0
   c = frappe.get_doc("CFDI Nota de Credito", docname)
+  mytime = datetime.strptime('0800','%H%M').time()
+  #fecha_actual = datetime.combine(c.posting_date,mytime).isoformat()[0:19] #dacosta - para hacer que se timbre con la fecha de posting_date
+
   fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
   serie = c.naming_series.replace('-','')
   folio = c.name.replace(serie,'')
@@ -534,7 +567,7 @@ def genera_xml_egreso(docname):
   regimen_fiscal = c.regimen_fiscal
 
   tax_id = c.tax_id.replace('&','&amp;')
-  nombre_receptor = c.customer_name.encode('ascii', 'ignore').decode('ascii')
+  nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
   uso_cfdi = c.uso_cfdi
 
   # fac_rel = frappe.get_doc(c.tipo_documento,c.factura_fuente)
@@ -663,7 +696,10 @@ def sales_invoice_timbrado(url, token, docname, version, b64=False):
 def sales_invoice_timbrado_xml(docname):
     c = frappe.get_doc("Sales Invoice", docname)
     cant = len(c.items)
-    fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
+    mytime = datetime.strptime('0800','%H%M').time()
+    fecha_actual = datetime.combine(c.posting_date,mytime).isoformat()[0:19] #dacosta - para hacer que se timbre con la fecha de posting_date
+
+    #fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
     serie = c.naming_series.replace('-','')
     folio = c.name.replace(serie,'')
     # frappe.errprint(c.name.replace(serie,''))
@@ -683,7 +719,7 @@ def sales_invoice_timbrado_xml(docname):
     regimen_fiscal = c.regimen_fiscal
 
     tax_id = c.tax_id.replace('&','&amp;')
-    nombre_receptor = c.customer_name.encode('ascii', 'ignore').decode('ascii').replace('&','&amp;')
+    nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
     uso_cfdi = c.uso_cfdi
 
     tipo = []
@@ -1067,11 +1103,14 @@ def prueba_timbrado(docname, debug = True):
 
 @frappe.whitelist()
 def genera_layout(docname,rfc_emisor):
+  mytime = datetime.strptime('0800','%H%M').time()
+  fecha_actual = datetime.combine(c.posting_date,mytime).isoformat()[0:19] #dacosta - para hacer que se timbre con la fecha de posting_date
+
   fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
   c = frappe.get_doc("Sales Invoice", docname)
   serie = c.naming_series
   folio = c.name
-  nombre_receptor = c.customer_name.encode('ascii', 'ignore').decode('ascii')
+  nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
   SubTotal='%.1f' % c.net_total
   # SubTotal='%.1f' % c.total
   redondeo = c.rounding_adjustment * -1
@@ -1278,11 +1317,14 @@ def genera_layout_cfdi(docname,rfc_emisor):
   tieneiva = 0
   notieneiva = 0
   tieneieps = 0
+  mytime = datetime.strptime('0800','%H%M').time()
+  #fecha_actual = datetime.combine(c.posting_date,mytime).isoformat()[0:19] #dacosta - para hacer que se timbre con la fecha de posting_date
+
   fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
   c = frappe.get_doc("CFDI", docname)
   serie = c.naming_series
   folio = c.name
-  nombre_receptor = c.customer_name.encode('ascii', 'ignore').decode('ascii')
+  nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
   SubTotal='%.2f' % c.total_neto
   Total='%.2f' % c.total
   FormaPago=c.forma_de_pago
@@ -1482,11 +1524,14 @@ def timbrado_egreso(docname, debug = True):
 def genera_layout_egreso(docname,rfc_emisor):
   tieneiva = 0
   notieneiva = 0
-  fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
+  mytime = datetime.strptime('0800','%H%M').time()
+  fecha_actual = datetime.combine(c.posting_date,mytime).isoformat()[0:19] #dacosta - para hacer que se timbre con la fecha de posting_date
+
+  #fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
   c = frappe.get_doc("CFDI Nota de Credito", docname)
   serie = c.naming_series
   folio = c.name
-  nombre_receptor = c.customer_name.encode('ascii', 'ignore').decode('ascii')
+  nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
   SubTotal='%.2f' % c.total_neto
   Total='%.2f' % c.total
   FormaPago=c.forma_de_pago

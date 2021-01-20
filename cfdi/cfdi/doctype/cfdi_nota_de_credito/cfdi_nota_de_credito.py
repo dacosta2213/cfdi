@@ -34,7 +34,7 @@ def crear_pago(self):
 	# pii.paid_to_account_currency = self.currency
 	# pii.paid_to  = self.paid_to
 	pii.reference_no = self.name
-	pii.naming_series = 'NC'
+	pii.naming_series = 'NC-'
 	# RG - Los clientes con currency != MXN solo pueden hacaer transacciones en su moneda nativa (ej. USD)
 	# RG - Los clientes sin default_currency o con MXN pueden transaccionar en cualquier moneda
 	# RG - Los payment entries derivados de los descuentos automaticos NO podran timbrarse.
@@ -49,7 +49,7 @@ def crear_pago(self):
 		pii.append('references', {
 			'reference_doctype': 'Sales Invoice',
 			'reference_name': i.sales_invoice,
-			'allocated_amount': i.valor,
+			'allocated_amount': float(i.valor) * float(self.conversion_rate),
 		})
 	pii.flags.ignore_permissions = True
 	pii.flags.ignore_mandatory = True
