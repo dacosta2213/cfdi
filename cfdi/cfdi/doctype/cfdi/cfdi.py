@@ -478,6 +478,18 @@ def genera_xml_pago(docname, url,user_id,user_password,folder,nombre_emisor,no_c
     </cfdi:Comprobante>""".format(**locals())
     return cfdi_pago
 
+@frappe.whitelist()
+def parcialidades_pe(doc,method=None):
+    if frappe.local.site == "demo.totall.mx":
+        for item in doc.references:
+            parc = 1
+            parcialidades = frappe.get_list('Payment Entry Reference', filters={'reference_name':item.reference_name}, fields=['parent'])
+            for parcialidad in parcialidades:
+                pago = frappe.db.get_value('Payment Entry',{'name':parcialidad.parent,'creation':['<',doc.creation],'docstatus':['<',2]},'posting_date')
+                if pago:
+                    parc = parc + 1
+            item.no_parcialidad = parc
+    return
 # MAPA DE complementos
 # Num_Operacion = c.name
 # FormaDePago = c.forma_de_pago
