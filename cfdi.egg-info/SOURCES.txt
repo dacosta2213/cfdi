@@ -100,6 +100,8 @@ cfdi/cfdi/print_format/cfdi/__init__.py
 cfdi/cfdi/print_format/cfdi/cfdi.json
 cfdi/cfdi/print_format/cfdi_complemento_de_pago/__init__.py
 cfdi/cfdi/print_format/cfdi_complemento_de_pago/cfdi_complemento_de_pago.json
+cfdi/cfdi/print_format/cfdi_complemento_de_pago_usd/__init__.py
+cfdi/cfdi/print_format/cfdi_complemento_de_pago_usd/cfdi_complemento_de_pago_usd.json
 cfdi/cfdi/print_format/cfdi_nota_de_credito/__init__.py
 cfdi/cfdi/print_format/cfdi_nota_de_credito/cfdi_nota_de_credito.json
 cfdi/cfdi/print_format/cfdi_sales_invoice/__init__.py

@@ -105,13 +105,13 @@ class Cliente:
         self.logger.info("\nSOAP response:\n %s" % cliente.last_received())
 
       return True
-    except WebFault, e:
+    except WebFault as e:
       self.__dict__['codigo_error'] = e.fault.faultcode
       self.__dict__['error'] = e.fault.faultstring
       if self.debug:
         self.logger.error("\nSOAP request:\n %s\nSOAP response: [%s] - %s" % (cliente.last_sent(), e.fault.faultcode, e.fault.faultstring))
       return False
-    except Exception, e:
+    except Exception as e:
       self.__dict__['codigo_error'] = 'Error desconocido'
       self.__dict__['error'] = e.message
       return False
@@ -126,13 +126,13 @@ class Cliente:
         self.logger.info("\nSOAP request:\n %s" % cliente.last_sent())
         self.logger.info("\nSOAP response:\n %s" % cliente.last_received())
       return True
-    except WebFault, e:
+    except WebFault as e:
       self.__dict__['codigo_error'] = e.fault.faultcode
       self.__dict__['error'] = e.fault.faultstring
       if self.debug:
         self.logger.error("\nSOAP request:\n %s\nSOAP response: [%s] - %s" % (cliente.last_sent(), e.fault.faultcode, e.fault.faultstring))
       return False
-    except Exception, e:
+    except Exception as e:
       self.__dict__['codigo_error'] = 'Error desconocido'
       self.__dict__['error'] = e.message
       return False
@@ -153,13 +153,13 @@ class Cliente:
         self.logger.info("\nSOAP request:\n %s" % cliente.last_sent())
         self.logger.info("\nSOAP response:\n %s" % cliente.last_received())
       return True
-    except WebFault, e:
+    except WebFault as e:
       self.__dict__['codigo_error'] = e.fault.faultcode
       self.__dict__['error'] = e.fault.faultstring
       if self.debug:
         self.logger.error("\nSOAP request:\n %s\nSOAP response: [%s] - %s" % (cliente.last_sent(), e.fault.faultcode, e.fault.faultstring))
       return False
-    except Exception, e:
+    except Exception as e:
       self.__dict__['codigo_error'] = 'Error desconocido'
       self.__dict__['error'] = e.message
       return False
@@ -603,7 +603,7 @@ TasaOCuota=[0.000000,0.160000]
 Importe=[0.00,{TotalIva}]
 """.format(**locals())
     elif notieneiva:
-		cfdif += """[Traslados]
+	       cfdif += """[Traslados]
 	TotalImpuestosTrasladados={TotalImpuestosTrasladados}
 	Impuesto=[002]
 	TipoFactor=[Tasa]
@@ -611,7 +611,7 @@ Importe=[0.00,{TotalIva}]
 	Importe=[0.00]
 """.format(**locals())
     else:
-		cfdif += """[Traslados]
+	       cfdif += """[Traslados]
 	TotalImpuestosTrasladados={TotalImpuestosTrasladados}
 	Impuesto=[002]
 	TipoFactor=[Tasa]
@@ -780,7 +780,7 @@ TasaOCuota=[0.000000,0.160000]
 Importe=[0.00,{TotalIva}]
 """.format(**locals())
     elif notieneiva:
-		cfdif += """[Traslados]
+	       cfdif += """[Traslados]
 	TotalImpuestosTrasladados={TotalImpuestosTrasladados}
 	Impuesto=[002]
 	TipoFactor=[Tasa]
@@ -788,7 +788,7 @@ Importe=[0.00,{TotalIva}]
 	Importe=[0.00]
 """.format(**locals())
     else:
-		cfdif += """[Traslados]
+	       cfdif += """[Traslados]
 	TotalImpuestosTrasladados={TotalImpuestosTrasladados}
 	Impuesto=[002]
 	TipoFactor=[Tasa]
