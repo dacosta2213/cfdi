@@ -1,0 +1,595 @@
+{
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2018-06-23 00:47:35.162351",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "customer_name",
+  "tax_id",
+  "creado",
+  "cvvv",
+  "desde_ticket",
+  "tipo_documento",
+  "factura_fuente",
+  "cfdi",
+  "uuid_relacionado",
+  "total_cfdi_relacionado",
+  "tipo_de_relacion",
+  "casca",
+  "validar_ticket",
+  "ticket",
+  "timbrar_cfdi",
+  "cfdi_status",
+  "cancelar_cfdi",
+  "datos_cfdi",
+  "forma_de_pago",
+  "condiciones_de_pago",
+  "tipo_de_comprobante",
+  "metodo_pago",
+  "datos_adicionales",
+  "cvv",
+  "uso_cfdi",
+  "referencia",
+  "lugar_expedicion",
+  "cvb3",
+  "uuid",
+  "emision",
+  "observaciones",
+  "cfdi_defaults",
+  "no_certificado",
+  "qr",
+  "regimen_fiscal",
+  "regimen_texto",
+  "nombre_emisor",
+  "rfc_emisor",
+  "folder",
+  "url_timbrado",
+  "user_id",
+  "user_password",
+  "facsb",
+  "si_sustitucion",
+  "currency_and_price_list",
+  "currency",
+  "cb001",
+  "conversion_rate",
+  "detalle_de_la_factura",
+  "items",
+  "totales",
+  "total_iva",
+  "total_ieps",
+  "descuento",
+  "motivo_descuento",
+  "cbbiten",
+  "total_neto",
+  "total_impuestos",
+  "total",
+  "timbrado",
+  "ccasca",
+  "otros",
+  "cvvss",
+  "naming_series",
+  "fechatimbrado",
+  "cadenaoriginalsat",
+  "sellocfd",
+  "nocertificadosat",
+  "sellosat",
+  "amended_from",
+  "token",
+  "url",
+  "version",
+  "incluye_impuesto",
+  "pac"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Cliente",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Cliente",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.tax_id",
+   "fieldname": "tax_id",
+   "fieldtype": "Data",
+   "label": "RFC",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cvvv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "desde_ticket",
+   "fieldtype": "Button",
+   "hidden": 1,
+   "label": "Iniciar Factura desde Ticket"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "tipo_documento",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Tipo Documento",
+   "options": "DocType"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "factura_fuente",
+   "fieldtype": "Dynamic Link",
+   "hidden": 1,
+   "label": "Factura Fuente",
+   "options": "tipo_documento"
+  },
+  {
+   "fieldname": "cfdi",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "CFDI Relacionado",
+   "options": "CFDI",
+   "report_hide": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fetch_from": "factura_fuente.uuid",
+   "fieldname": "uuid_relacionado",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "UUID Relacionado",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "cfdi.total",
+   "fieldname": "total_cfdi_relacionado",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Total CFDI Relacionado",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tipo_de_relacion",
+   "fieldtype": "Link",
+   "label": "Tipo de Relacion",
+   "options": "CFDI Relacion Documentos",
+   "reqd": 1
+  },
+  {
+   "fieldname": "casca",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.ticket",
+   "fieldname": "validar_ticket",
+   "fieldtype": "Button",
+   "label": "Validar Datos Ticket"
+  },
+  {
+   "fieldname": "ticket",
+   "fieldtype": "Data",
+   "label": "Ticket",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:!doc.__islocal && doc.cfdi_status === \"Sin Timbrar\" && doc.docstatus === 1 && !doc.__unsaved",
+   "fieldname": "timbrar_cfdi",
+   "fieldtype": "Button",
+   "label": "Timbrar CFDI"
+  },
+  {
+   "default": "Sin Timbrar",
+   "fieldname": "cfdi_status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "CFDI Status"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.cfdi_status === \"Timbrado\"",
+   "fieldname": "cancelar_cfdi",
+   "fieldtype": "Button",
+   "label": "Cancelar CFDI"
+  },
+  {
+   "collapsible_depends_on": "doc.cfdi_status === \"Nada\"",
+   "fieldname": "datos_cfdi",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "DATOS CFDI"
+  },
+  {
+   "fieldname": "forma_de_pago",
+   "fieldtype": "Link",
+   "label": "Forma de Pago",
+   "options": "CFDI Forma de Pago"
+  },
+  {
+   "fieldname": "condiciones_de_pago",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Condiciones de Pago",
+   "options": "Contado\nCredito"
+  },
+  {
+   "default": "E",
+   "fieldname": "tipo_de_comprobante",
+   "fieldtype": "Data",
+   "label": "Tipo De Comprobante",
+   "read_only": 1
+  },
+  {
+   "fieldname": "metodo_pago",
+   "fieldtype": "Link",
+   "label": "Metodo de Pago",
+   "options": "CFDI Metodo Pago"
+  },
+  {
+   "fieldname": "datos_adicionales",
+   "fieldtype": "Small Text",
+   "label": "Datos adicionales"
+  },
+  {
+   "fieldname": "cvv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "G02",
+   "fieldname": "uso_cfdi",
+   "fieldtype": "Data",
+   "label": "Uso CFDI",
+   "read_only": 1
+  },
+  {
+   "default": "No Identificado",
+   "description": "# de tarjeta o  cheque.",
+   "fieldname": "referencia",
+   "fieldtype": "Data",
+   "label": "Referencia"
+  },
+  {
+   "fieldname": "lugar_expedicion",
+   "fieldtype": "Data",
+   "label": "Lugar Expedicion"
+  },
+  {
+   "fieldname": "cvb3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "uuid",
+   "fieldtype": "Data",
+   "label": "uuid"
+  },
+  {
+   "default": "Now",
+   "fieldname": "emision",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Emision"
+  },
+  {
+   "default": "N/A",
+   "fieldname": "observaciones",
+   "fieldtype": "Small Text",
+   "label": "Observaciones"
+  },
+  {
+   "fieldname": "cfdi_defaults",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "CFDI DEFAULTS"
+  },
+  {
+   "fieldname": "no_certificado",
+   "fieldtype": "Data",
+   "label": "Certificado del Cliente"
+  },
+  {
+   "fieldname": "qr",
+   "fieldtype": "Data",
+   "label": "qr",
+   "read_only": 1
+  },
+  {
+   "fieldname": "regimen_fiscal",
+   "fieldtype": "Link",
+   "label": "Regimen Fiscal",
+   "options": "CFDI Regimen Fiscal"
+  },
+  {
+   "fetch_from": "regimen_fiscal.descripcion",
+   "fieldname": "regimen_texto",
+   "fieldtype": "Data",
+   "label": "Regimen_Texto"
+  },
+  {
+   "fieldname": "nombre_emisor",
+   "fieldtype": "Data",
+   "label": "Nombre Emisor"
+  },
+  {
+   "fieldname": "rfc_emisor",
+   "fieldtype": "Data",
+   "label": "RFC Emisor"
+  },
+  {
+   "fieldname": "folder",
+   "fieldtype": "Data",
+   "label": "folder"
+  },
+  {
+   "fieldname": "url_timbrado",
+   "fieldtype": "Data",
+   "label": "url_timbrado"
+  },
+  {
+   "fieldname": "user_id",
+   "fieldtype": "Data",
+   "label": "user_id"
+  },
+  {
+   "fieldname": "user_password",
+   "fieldtype": "Data",
+   "label": "user_password"
+  },
+  {
+   "fieldname": "facsb",
+   "fieldtype": "Section Break",
+   "label": "FACTURAS RELACIONADAS"
+  },
+  {
+   "fieldname": "si_sustitucion",
+   "fieldtype": "Table",
+   "label": "SI Sustitucion",
+   "options": "SI Sustitucion"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "customer",
+   "fieldname": "currency_and_price_list",
+   "fieldtype": "Section Break",
+   "label": "MONEDA Y TIPO DE CAMBIO"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "print_hide": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb001",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "conversion_rate",
+   "fieldtype": "Data",
+   "label": "Exchange Rate",
+   "precision": "9",
+   "print_hide": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "detalle_de_la_factura",
+   "fieldtype": "Section Break",
+   "label": "DETALLE DE LA FACTURA"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "CFDI Nota de Credito Item"
+  },
+  {
+   "fieldname": "totales",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_iva",
+   "fieldtype": "Currency",
+   "label": "Total IVA",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_ieps",
+   "fieldtype": "Currency",
+   "label": "Total IEPS",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "descuento",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Descuento",
+   "read_only": 1
+  },
+  {
+   "default": "NA",
+   "fieldname": "motivo_descuento",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Motivo del Descuento",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cbbiten",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_neto",
+   "fieldtype": "Currency",
+   "label": "Total Neto",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_impuestos",
+   "fieldtype": "Currency",
+   "label": "Total Impuestos",
+   "read_only": 1
+  },
+  {
+   "bold": 1,
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "timbrado",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "ccasca",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "otros",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "OTROS"
+  },
+  {
+   "fieldname": "cvvss",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Data",
+   "label": "naming series",
+   "options": "NC"
+  },
+  {
+   "fieldname": "fechatimbrado",
+   "fieldtype": "Data",
+   "label": "fechatimbrado"
+  },
+  {
+   "fieldname": "cadenaoriginalsat",
+   "fieldtype": "Small Text",
+   "label": "cadenaoriginalsat"
+  },
+  {
+   "fieldname": "sellocfd",
+   "fieldtype": "Small Text",
+   "label": "sellocfd"
+  },
+  {
+   "fieldname": "nocertificadosat",
+   "fieldtype": "Small Text",
+   "label": "certsat"
+  },
+  {
+   "fieldname": "sellosat",
+   "fieldtype": "Small Text",
+   "label": "sellosat"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "CFDI Nota de Credito",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "token",
+   "fieldtype": "Small Text",
+   "label": "token"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "url"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "version",
+   "fieldtype": "Data",
+   "label": "version"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "incluye_impuesto",
+   "fieldtype": "Data",
+   "label": "incluye_impuesto"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "pac",
+   "fieldtype": "Data",
+   "label": "pac"
+  },
+  {
+   "fieldname": "creado",
+   "fieldtype": "Data",
+   "label": "Creado el:",
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2021-02-05 11:53:03.529305",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "CFDI Nota de Credito",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "POS",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "customer"
+}

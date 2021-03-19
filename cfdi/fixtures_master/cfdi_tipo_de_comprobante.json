@@ -1,0 +1,42 @@
+[
+ {
+  "clave": "I", 
+  "descripcion": "Ingreso", 
+  "docstatus": 0, 
+  "doctype": "CFDI Tipo De Comprobante", 
+  "modified": "2017-12-01 16:17:26.021435", 
+  "name": "I"
+ }, 
+ {
+  "clave": "E", 
+  "descripcion": "Egreso", 
+  "docstatus": 0, 
+  "doctype": "CFDI Tipo De Comprobante", 
+  "modified": "2017-12-01 16:17:26.025022", 
+  "name": "E"
+ }, 
+ {
+  "clave": "T", 
+  "descripcion": "Traslado", 
+  "docstatus": 0, 
+  "doctype": "CFDI Tipo De Comprobante", 
+  "modified": "2017-12-01 16:17:26.028539", 
+  "name": "T"
+ }, 
+ {
+  "clave": "N", 
+  "descripcion": "N\u00f3mina", 
+  "docstatus": 0, 
+  "doctype": "CFDI Tipo De Comprobante", 
+  "modified": "2017-12-01 16:17:26.031107", 
+  "name": "N"
+ }, 
+ {
+  "clave": "P", 
+  "descripcion": "Pago", 
+  "docstatus": 0, 
+  "doctype": "CFDI Tipo De Comprobante", 
+  "modified": "2017-12-01 16:17:26.033567", 
+  "name": "P"
+ }
+]

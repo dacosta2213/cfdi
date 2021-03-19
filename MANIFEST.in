@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include cfdi *.css
+recursive-include cfdi *.csv
+recursive-include cfdi *.html
+recursive-include cfdi *.ico
+recursive-include cfdi *.js
+recursive-include cfdi *.json
+recursive-include cfdi *.md
+recursive-include cfdi *.png
+recursive-include cfdi *.py
+recursive-include cfdi *.svg
+recursive-include cfdi *.txt
+recursive-exclude cfdi *.pyc

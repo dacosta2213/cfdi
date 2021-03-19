@@ -1,0 +1,122 @@
+{
+ "creation": "2018-06-27 16:57:01.596129",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "item_name",
+  "stock_uom",
+  "clave_producto",
+  "clave_unidad",
+  "warehouse",
+  "cbb",
+  "qty",
+  "precio_de_venta",
+  "monto",
+  "precio_unitario_neto",
+  "precio_neto",
+  "tax",
+  "impuestos_totales"
+ ],
+ "fields": [
+  {
+   "bold": 1,
+   "default": "Nota de Credito con IVA",
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Articulo",
+   "options": "Item",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Articulo"
+  },
+  {
+   "fetch_from": "item_code.stock_uom",
+   "fieldname": "stock_uom",
+   "fieldtype": "Data",
+   "label": "Unidad de Medida"
+  },
+  {
+   "fetch_from": "item_code.clave_producto",
+   "fieldname": "clave_producto",
+   "fieldtype": "Data",
+   "label": "CFDI Clave de Producto"
+  },
+  {
+   "fetch_from": "item_code.clave_unidad",
+   "fieldname": "clave_unidad",
+   "fieldtype": "Data",
+   "label": "CFDI Clave de  Unidad"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Almacen",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "cbb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Cantidad"
+  },
+  {
+   "fetch_from": "item_code.standard_rate",
+   "fieldname": "precio_de_venta",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Precio Unitario"
+  },
+  {
+   "fieldname": "monto",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Monto"
+  },
+  {
+   "fieldname": "precio_unitario_neto",
+   "fieldtype": "Float",
+   "label": "Precio Unitario Neto",
+   "read_only": 1
+  },
+  {
+   "fieldname": "precio_neto",
+   "fieldtype": "Float",
+   "label": "Monto Neto"
+  },
+  {
+   "fieldname": "tax",
+   "fieldtype": "Int",
+   "label": "Porcentaje Impuesto",
+   "read_only": 1
+  },
+  {
+   "fieldname": "impuestos_totales",
+   "fieldtype": "Float",
+   "label": "Impuestos Totales",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2021-02-05 11:55:39.289316",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "CFDI Nota de Credito Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
