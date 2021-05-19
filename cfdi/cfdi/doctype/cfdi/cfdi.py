@@ -195,23 +195,25 @@ def genera_xml(docname):
   serie = c.naming_series.replace('-','')
   folio = c.name.replace(serie,'')
   FormaPago = c.forma_de_pago
-  SubTotal = '%.2f' % c.total_neto
+  SubTotal = float(c.total)
   # Falta descuento
-  Total = '%.2f' % c.total
+  descuento = float(c.discount_amount)
+  Total = '%.2f' % (c.grand_total)
   TipoDeComprobante = c.tipo_de_comprobante
   MetodoPago = c.metodo_pago
   LugarExpedicion = c.lugar_expedicion
   NoCertificado = c.no_certificado
 
   rfc_emisor = c.rfc_emisor
-  nombre_emisor = c.nombre_emisor
+
+  nombre_emisor = c.nombre_emisor.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
   regimen_fiscal = c.regimen_fiscal
 
   tax_id = c.tax_id.replace('&','&amp;')
   # nombre_receptor = c.customer_name.encode('ascii', 'ignore').decode('ascii')
   # nombre_receptor = c.customer_name.encode('UTF-8', 'ignore')
   # nombre_receptor = c.customer_name.decode('UTF-8')
-  nombre_receptor = c.customer_name#.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('Á','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('Ü'.'u').replace('ü','u').replace('@',' ').replace('Ñ','N').replace('ñ','n')
+  nombre_receptor = c.customer_name#.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('Á','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('Ü'.'u').replace('ü','u').replace('@',' ')
   uso_cfdi = c.uso_cfdi
 
   tipo = []
@@ -257,7 +259,7 @@ def genera_xml(docname):
           Importetax= "0.00"
 
       cfdi_items += """
-    <cfdi:Concepto ClaveProdServ="{ClaveProdServ}" NoIdentificacion="{NoIdentificacion}" Cantidad="{Cantidad}" ClaveUnidad="{ClaveUnidad}" Unidad="{Unidad}" Descripcion="{Descripcion}" ValorUnitario="{ValorUnitario}" Importe="{Importe}" Descuento="0.00">
+    <cfdi:Concepto ClaveProdServ="{ClaveProdServ}" NoIdentificacion="{NoIdentificacion}" Cantidad="{Cantidad}" ClaveUnidad="{ClaveUnidad}" Unidad="{Unidad}" Descripcion="{Descripcion}" ValorUnitario="{ValorUnitario}" Importe="{Importe}">
       <cfdi:Impuestos>
         <cfdi:Traslados>
           <cfdi:Traslado Base="{TrasladosBase}" Impuesto="{Impuesto}" TipoFactor="Tasa" TasaOCuota="{ImpuestosTrasladosTasaOCuota}" Importe="{Importetax}"/>
@@ -290,7 +292,7 @@ def genera_xml(docname):
   cfdi = """<?xml version="1.0" encoding="UTF-8"?>
 <cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd"
 Version="3.3" Serie="{serie}" Folio="{folio}" Fecha="{fecha_actual}" Sello="" FormaPago="{FormaPago}" NoCertificado=""
-Certificado="" CondicionesDePago="CONTADO" SubTotal="{SubTotal}" Descuento="0.00" Moneda="MXN" Total="{Total}" TipoDeComprobante="{TipoDeComprobante}" MetodoPago="{MetodoPago}" LugarExpedicion="{LugarExpedicion}">
+Certificado="" CondicionesDePago="CONTADO" SubTotal="{SubTotal}" Descuento="{descuento}" Moneda="MXN" Total="{Total}" TipoDeComprobante="{TipoDeComprobante}" MetodoPago="{MetodoPago}" LugarExpedicion="{LugarExpedicion}">
   <cfdi:Emisor Rfc="{rfc_emisor}" Nombre="{nombre_emisor}" RegimenFiscal="{regimen_fiscal}"/>
   <cfdi:Receptor Rfc="{tax_id}" Nombre="{nombre_receptor}" UsoCFDI="{uso_cfdi}"/>
   <cfdi:Conceptos>""".format(**locals())
@@ -380,16 +382,16 @@ def genera_xml_pago(docname, url,user_id,user_password,folder,nombre_emisor,no_c
     RegimenFiscal = c.regimen_fiscal
     RfcReceptor = c.tax_id.replace('&','&amp;')
     #########+++++++++++++++++SE COMENTARON LOS .replace DE LAS LINEAS 382 Y 214
-    NombreReceptor = c.party_name#.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('Á','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('Ü'.'u').replace('ü','u').replace('@',' ').replace('Ñ','N').replace('ñ','n')
+    NombreReceptor = c.party_name#.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('Á','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('Ü'.'u').replace('ü','u').replace('@',' ')
     LugarExpedicion = c.lugar_expedicion
-
-    mytime = datetime.strptime('1200','%H%M').time()
+    now = datetime.now()
+    mytime = now.strftime('%H%M')
     FechaContabilizacion = datetime.combine(c.posting_date,mytime).isoformat()[0:19]
 
     Serie = c.naming_series.replace('-','')
     Folio = c.name.replace(Serie,'')
     rfc_emisor = c.rfc_emisor
-    nombre_emisor = nombre_emisor
+    nombre_emisor = nombre_emisor.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
     NoCertificado = no_certificado
     FormaDePagoP = c.forma_de_pago
     Monto = '%.2f' %  c.received_amount
@@ -581,20 +583,21 @@ def genera_xml_egreso(docname):
   serie = c.naming_series.replace('-','')
   folio = c.name.replace(serie,'')
   FormaPago = c.forma_de_pago
-  SubTotal = '%.2f' % c.total_neto
+  SubTotal = float(c.total)
   # Falta descuento
-  Total = '%.2f' % c.total
+  descuento = float(c.discount_amount)
+  Total = '%.2f' % (c.grand_total)
   TipoDeComprobante = c.tipo_de_comprobante
   MetodoPago = c.metodo_pago
   LugarExpedicion = c.lugar_expedicion
   NoCertificado = c.no_certificado
 
   rfc_emisor = c.rfc_emisor
-  nombre_emisor = c.nombre_emisor
+  nombre_emisor = c.nombre_emisor.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
   regimen_fiscal = c.regimen_fiscal
 
   tax_id = c.tax_id.replace('&','&amp;')
-  nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
+  nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
   uso_cfdi = c.uso_cfdi
 
   # fac_rel = frappe.get_doc(c.tipo_documento,c.factura_fuente)
@@ -602,12 +605,15 @@ def genera_xml_egreso(docname):
   # uuid_rel = fac_rel.uuid
 
   Currency = c.currency
-  TipoCambio = c.conversion_rate
+  if Currency == 'MXN':
+    TipoCambio = 1
+  else:
+    TipoCambio = '%.4f' % c.conversion_rate
 
   cfdi = """<?xml version="1.0" encoding="UTF-8"?>
 <cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd"
 Version="3.3" Serie="{serie}" Folio="{folio}" Fecha="{fecha_actual}" Sello="" FormaPago="{FormaPago}" NoCertificado=""
-Certificado="" CondicionesDePago="CONTADO" SubTotal="{SubTotal}" Descuento="0.00" Moneda="{Currency}" TipoCambio = "{TipoCambio}" Total="{Total}" TipoDeComprobante="{TipoDeComprobante}" MetodoPago="{MetodoPago}" LugarExpedicion="{LugarExpedicion}">""".format(**locals())
+Certificado="" CondicionesDePago="CONTADO" SubTotal="{SubTotal}" Descuento="{descuento}" Moneda="{Currency}" TipoCambio = "{TipoCambio}" Total="{Total}" TipoDeComprobante="{TipoDeComprobante}" MetodoPago="{MetodoPago}" LugarExpedicion="{LugarExpedicion}">""".format(**locals())
   site = frappe.local.site
   # if site == "demo.totall.mx":
   cfdi+= """
@@ -644,7 +650,7 @@ Certificado="" CondicionesDePago="CONTADO" SubTotal="{SubTotal}" Descuento="0.00
           TasaOCuota="0.000000"
           Importetax= "0.00"
       cfdi += """
-    <cfdi:Concepto ClaveProdServ="{ClaveProdServ}" NoIdentificacion="{NoIdentificacion}" Cantidad="{Cantidad}" ClaveUnidad="{ClaveUnidad}" Unidad="{Unidad}" Descripcion="{Descripcion}" ValorUnitario="{ValorUnitario}" Importe="{Importe}" Descuento="0.00">
+    <cfdi:Concepto ClaveProdServ="{ClaveProdServ}" NoIdentificacion="{NoIdentificacion}" Cantidad="{Cantidad}" ClaveUnidad="{ClaveUnidad}" Unidad="{Unidad}" Descripcion="{Descripcion}" ValorUnitario="{ValorUnitario}" Importe="{Importe}">
       <cfdi:Impuestos>
         <cfdi:Traslados>
           <cfdi:Traslado Base="{TrasladosBase}" Impuesto="{Impuesto}" TipoFactor="Tasa" TasaOCuota="{TasaOCuota}" Importe="{Importetax}"/>
@@ -723,30 +729,37 @@ def sales_invoice_timbrado(url, token, docname, version, b64=False):
 def sales_invoice_timbrado_xml(docname):
     c = frappe.get_doc("Sales Invoice", docname)
     cant = len(c.items)
-    mytime = datetime.strptime('0800','%H%M').time()
-    fecha_actual = datetime.combine(c.posting_date,mytime).isoformat()[0:19] #dacosta - para hacer que se timbre con la fecha de posting_date
-
-    #fecha_actual = (datetime.now()- timedelta(minutes=360)).isoformat()[0:19]
+    # horaminuto = c.posting_time
+    # frappe.errprint(h oraminuto)
+    # mytime = horaminuto.strftime("%H:%M:%S")
+    # frappe.errprint(horaminuto)
+    # return
+    #fecha_actual = datetime.combine(c.posting_date,mytime).isoformat()[0:19] #dacosta - para hacer que se timbre con la fecha de posting_date
+    descuento = float(c.discount_amount)
+    fecha_actual = (c.creation).isoformat()[0:19]
     serie = c.naming_series.replace('-','')
     folio = c.name.replace(serie,'')
     # frappe.errprint(c.name.replace(serie,''))
     FormaPago = c.forma_de_pago
     #SubTotal = '%.2f' % c.net_total
-    SubTotal = 0
-    Total = '%.2f' % c.grand_total
+    SubTotal = float(c.total)
+    Total = '%.2f' % (c.grand_total)
     # Total = 3509.40
     TipoDeComprobante = c.tipo_de_comprobante
-    TipoCambio = '%d' % c.conversion_rate
     # TipoCambio = 1 if c.currency = "MXN" else '%2f' % c.conversion_rate
     MetodoPago = c.metodo_pago
     LugarExpedicion = c.lugar_expedicion
     Currency = c.currency
+    if Currency == 'MXN':
+      TipoCambio = 1
+    else:
+      TipoCambio = '%.4f' % c.conversion_rate
     rfc_emisor = c.rfc_emisor
-    nombre_emisor = c.nombre_emisor
+    nombre_emisor = c.nombre_emisor.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
     regimen_fiscal = c.regimen_fiscal
 
     tax_id = c.tax_id.replace('&','&amp;')
-    nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
+    nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
     uso_cfdi = c.uso_cfdi
 
     tipo = []
@@ -761,22 +774,24 @@ def sales_invoice_timbrado_xml(docname):
         Cantidad = x.qty
         Unidad = x.stock_uom
         ValorUnitario = '%.2f' % x.rate
-        Importe = '%.2f' % x.amount
+        Importe = float(x.amount)
         idx = x.idx
         Descripcion = x.item_name
-
-        TrasladosBase= '%.2f' % x.net_amount
-        SubTotal = SubTotal + float(TrasladosBase)
+        des = float(x.descuento)
+        TrasladosBase1= Importe - des
+        TrasladosBase= float(TrasladosBase1)
         TasaOCuota = .01 * float(x.tasa)
         ImpuestosTrasladosTasaOCuota='%.6f' % TasaOCuota
-        Importetax= '%.2f' % (TasaOCuota * float(x.amount))
+        Importetax1= float(TrasladosBase * 0.16)
+        Importetax= '%.2f' % (Importetax1)
 
         if x.tipo_de_impuesto == "IVA":
             Impuesto="002"
         elif x.tipo_de_impuesto == "IEPS":
             Impuesto="003"
         else:
-            TrasladosBase= '%.2f' % x.net_amount
+            TrasladosBase1= Importe - des
+            TrasladosBase= '%.2f' % (TrasladosBase1)
             Impuesto="002"
             ImpuestosTrasladosTasaOCuota="0.000000"
             Importetax= "0.00"
@@ -786,7 +801,7 @@ def sales_invoice_timbrado_xml(docname):
         cantidad.append(Importetax)
 
         cfdi_items += """
-        <cfdi:Concepto ClaveProdServ="{ClaveProdServ}" NoIdentificacion="{NoIdentificacion}" Cantidad="{Cantidad}" ClaveUnidad="{ClaveUnidad}" Unidad="{Unidad}" Descripcion="{Descripcion}" ValorUnitario="{ValorUnitario}" Importe="{Importe}" Descuento="0.00">
+        <cfdi:Concepto ClaveProdServ="{ClaveProdServ}" NoIdentificacion="{NoIdentificacion}" Cantidad="{Cantidad}" ClaveUnidad="{ClaveUnidad}" Unidad="{Unidad}" Descripcion="{Descripcion}" ValorUnitario="{ValorUnitario}" Importe="{Importe}" Descuento="{des}">
             <cfdi:Impuestos>
                 <cfdi:Traslados>
                     <cfdi:Traslado Base="{TrasladosBase}" Impuesto="{Impuesto}" TipoFactor="Tasa" TasaOCuota="{ImpuestosTrasladosTasaOCuota}" Importe="{Importetax}"/>
@@ -816,11 +831,11 @@ def sales_invoice_timbrado_xml(docname):
                 cfdi_traslados += """
                 <cfdi:Traslado Impuesto="{t}" TipoFactor="Tasa" TasaOCuota="{b}" Importe="{suma}"/>""".format(**locals())
 
-    Total = float(SubTotal) + float(total_impuesto)
+    Total = '%.2f' % (c.grand_total)
     cfdi = """<?xml version="1.0" encoding="UTF-8"?>
 <cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd"
 Version="3.3" Serie="{serie}" Folio="{folio}" Fecha="{fecha_actual}" Sello="" FormaPago="{FormaPago}" NoCertificado=""
-Certificado="" CondicionesDePago="CONTADO" SubTotal="{SubTotal}" Descuento="0.00" Moneda="{Currency}" TipoCambio = "{TipoCambio}" Total="{Total}" TipoDeComprobante="{TipoDeComprobante}" MetodoPago="{MetodoPago}" LugarExpedicion="{LugarExpedicion}">""".format(**locals())
+Certificado="" CondicionesDePago="CONTADO" SubTotal="{SubTotal}" Descuento="{descuento}" Moneda="{Currency}" TipoCambio = "{TipoCambio}" Total="{Total}" TipoDeComprobante="{TipoDeComprobante}" MetodoPago="{MetodoPago}" LugarExpedicion="{LugarExpedicion}">""".format(**locals())
     #
     #es_sustitucion = frappe.get_value('Sales Invoice', docname,'sustituidos')
     # try:
@@ -1137,7 +1152,7 @@ def cancel_by_uuid_sales_invoice(url, token,uuid,docname, rfc):
 #   c = frappe.get_doc("Sales Invoice", docname)
 #   serie = c.naming_series
 #   folio = c.name
-#   nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
+#   nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
 #   SubTotal='%.1f' % c.net_total
 #   # SubTotal='%.1f' % c.total
 #   redondeo = c.rounding_adjustment * -1
@@ -1351,7 +1366,7 @@ def cancel_by_uuid_sales_invoice(url, token,uuid,docname, rfc):
 #   c = frappe.get_doc("CFDI", docname)
 #   serie = c.naming_series
 #   folio = c.name
-#   nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
+#   nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
 #   SubTotal='%.2f' % c.total_neto
 #   Total='%.2f' % c.total
 #   FormaPago=c.forma_de_pago
@@ -1558,7 +1573,7 @@ def cancel_by_uuid_sales_invoice(url, token,uuid,docname, rfc):
 #   c = frappe.get_doc("CFDI Nota de Credito", docname)
 #   serie = c.naming_series
 #   folio = c.name
-#   nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ').replace('Ñ','N')
+#   nombre_receptor = c.customer_name.replace('&','Y').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').replace('À','a').replace('É','e').replace('Í','i').replace('Ó','o').replace('Ú','u').replace('@',' ')
 #   SubTotal='%.2f' % c.total_neto
 #   Total='%.2f' % c.total
 #   FormaPago=c.forma_de_pago
