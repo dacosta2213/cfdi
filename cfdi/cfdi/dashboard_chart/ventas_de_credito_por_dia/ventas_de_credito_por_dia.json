@@ -1,0 +1,32 @@
+{
+ "chart_name": "VENTAS DE CREDITO POR DIA",
+ "chart_type": "Report",
+ "creation": "2021-07-12 11:04:19.674012",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2021-08-02 11:02:18.708678",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "VENTAS DE CREDITO POR DIA",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "VENTAS DE CR\u00c9DITO POR D\u00cdA",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Line",
+ "use_report_chart": 0,
+ "x_field": "posting_date",
+ "y_axis": [
+  {
+   "color": "#4F9DD9",
+   "y_field": "sum"
+  }
+ ]
+}

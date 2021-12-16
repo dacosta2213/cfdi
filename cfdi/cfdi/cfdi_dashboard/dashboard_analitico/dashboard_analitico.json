@@ -1,0 +1,122 @@
+{
+ "cards": [
+  {
+   "card": "Por Cobrar"
+  },
+  {
+   "card": "Por pagar"
+  },
+  {
+   "card": "Total Ingresos"
+  },
+  {
+   "card": "Total Egresos"
+  },
+  {
+   "card": "Nuevos Prospectos (Este mes)"
+  },
+  {
+   "card": "Nuevas Oportunidades (Este mes)"
+  },
+  {
+   "card": "Oportunidades Ganadas (Este mes)"
+  },
+  {
+   "card": "Oportunidades abiertas"
+  },
+  {
+   "card": "Valor de Oportunidades"
+  },
+  {
+   "card": "Valor de Oportunidades Ganadas"
+  },
+  {
+   "card": "Valor de Oportunidades Perdidas"
+  },
+  {
+   "card": "Annual Purchase"
+  },
+  {
+   "card": "Purchase Orders to Receive"
+  },
+  {
+   "card": "Purchase Orders to Bill"
+  },
+  {
+   "card": "Active Suppliers"
+  },
+  {
+   "card": "Total Stock Value"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Profit and Loss",
+   "width": "Full"
+  },
+  {
+   "chart": "Accounts Receivable Ageing",
+   "width": "Half"
+  },
+  {
+   "chart": "Accounts Payable Ageing",
+   "width": "Half"
+  },
+  {
+   "chart": "Ventas por Vendedor (Por mes)",
+   "width": "Full"
+  },
+  {
+   "chart": "Incoming Leads",
+   "width": "Half"
+  },
+  {
+   "chart": "Opportunity Trends",
+   "width": "Half"
+  },
+  {
+   "chart": "Articulos mas Vendidos",
+   "width": "Full"
+  },
+  {
+   "chart": "Top Clientes",
+   "width": "Full"
+  },
+  {
+   "chart": "Facturas de cr\u00e9dito y Pagos por mes",
+   "width": "Full"
+  },
+  {
+   "chart": "Purchase Order Trends",
+   "width": "Full"
+  },
+  {
+   "chart": "Articulos mas Comprados",
+   "width": "Full"
+  },
+  {
+   "chart": "Top Proveedores",
+   "width": "Full"
+  },
+  {
+   "chart": "Warehouse wise Stock Value",
+   "width": "Full"
+  },
+  {
+   "chart": "Cantidad Actual por Tipo",
+   "width": "Full"
+  }
+ ],
+ "creation": "2021-08-02 11:11:01.317369",
+ "dashboard_name": "Dashboard Analitico",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2021-12-14 21:19:48.753358",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "Dashboard Analitico",
+ "owner": "Administrator"
+}

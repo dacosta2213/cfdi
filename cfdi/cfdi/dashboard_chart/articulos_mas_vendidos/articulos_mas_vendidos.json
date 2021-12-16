@@ -1,0 +1,35 @@
+{
+ "based_on": "",
+ "chart_name": "Articulos mas Vendidos",
+ "chart_type": "Report",
+ "creation": "2021-08-02 13:25:12.939061",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2021-08-09 11:36:07.904998",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "Articulos mas Vendidos",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Art\u00edculos mas Vendidos",
+ "source": "",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "x_field": "item_code",
+ "y_axis": [
+  {
+   "color": "#29CD42",
+   "y_field": "sum"
+  }
+ ]
+}

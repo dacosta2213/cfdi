@@ -1,0 +1,46 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2021-08-02 20:04:57.328926",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "Sin m\u00e1s por el momento quedo de usted para cualquier duda o aclaraci\u00f3n",
+ "modified": "2021-08-02 20:11:12.734777",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "Cantidad Actual por Marca",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "select  sum(b.actual_qty) as 'Cantidad Actual:Float:', c.descripcion as 'Tipo' \nfrom `tabItem` a inner join\n `tabBin` b on a.item_code = b.item_code left join\n `tabCFDI Clave Producto` c on a.clave_producto = c.name\n\ngroup by a.clave_producto\norder by sum(b.actual_qty) desc",
+ "ref_doctype": "Item",
+ "report_name": "Cantidad Actual por Marca",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Sales Master Manager"
+  },
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "Stock Manager"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Accounts Manager"
+  }
+ ]
+}

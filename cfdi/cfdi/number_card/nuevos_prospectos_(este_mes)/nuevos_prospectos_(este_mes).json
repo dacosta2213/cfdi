@@ -1,0 +1,21 @@
+{
+ "creation": "2020-07-20 20:17:15.870736",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Lead",
+ "dynamic_filters_json": "[[\"Lead\",\"company\",\"=\",\"frappe.defaults.get_user_default(\\\"Company\\\")\"]]",
+ "filters_json": "[[\"Lead\",\"creation\",\"Timespan\",\"last month\",false]]",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Nuevos Prospectos (Este mes)",
+ "modified": "2021-08-02 11:07:22.119634",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "Nuevos Prospectos (Este mes)",
+ "owner": "Administrator",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Document Type"
+}

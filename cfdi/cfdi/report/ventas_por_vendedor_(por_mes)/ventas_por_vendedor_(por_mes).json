@@ -1,0 +1,40 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2021-08-02 11:41:23.350265",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "Sin m\u00e1s por el momento quedo de usted para cualquier duda o aclaraci\u00f3n",
+ "modified": "2021-08-02 11:42:27.786878",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "Ventas por vendedor (Por Mes)",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT `tabSales Order`.`owner` AS `vendedor`, sum(`tabSales Order`.`base_total`) AS `sum`\r\nFROM `tabSales Order`\r\nWHERE (`tabSales Order`.`docstatus` = 1\r\n   AND str_to_date(concat(date_format(`tabSales Order`.`creation`, '%%Y-%%m'), '-01'), '%%Y-%%m-%%d') = str_to_date(concat(date_format(date_add(now(), INTERVAL -1 month), '%%Y-%%m'), '-01'), '%%Y-%%m-%%d'))\r\nGROUP BY `tabSales Order`.`owner`\r\nORDER BY `tabSales Order`.`owner` ASC",
+ "ref_doctype": "Sales Order",
+ "report_name": "Ventas por vendedor (Por Mes)",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Maintenance User"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Stock User"
+  }
+ ]
+}

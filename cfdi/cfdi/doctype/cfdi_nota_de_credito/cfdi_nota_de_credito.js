@@ -60,9 +60,40 @@ frappe.ui.form.on("CFDI Nota de Credito Item", "precio_de_venta", function(frm, 
 });
 
 frappe.ui.form.on('CFDI Nota de Credito', {
-	finalizar: function(frm) {
-		frm.call('movimiento')
-	},
+	on_submit: function(frm) {
+			frappe.call({
+            method: "totall.api.crear_pago",
+            args: {
+                doctype: "CFDI Nota de Credito",
+                name: frm.doc.name
+            },
+            callback: function(r) {
+                msgprint(r.message);
+            }
+			});
+			frappe.call({
+            method: "totall.api.create_stock_entry",
+            args: {
+                doctype: "CFDI Nota de Credito",
+                name: frm.doc.name
+            },
+            callback: function(r) {
+                msgprint(r.message);
+            }
+			});
+			},
+	after_cancel: function(frm) {
+			frappe.call({
+		    method: "totall.api.cancelar_pago",
+		    args: {
+		        doctype: "CFDI Nota de Credito",
+		        name: frm.doc.name
+		        },
+		        callback: function(r) {
+		            msgprint(r.message);
+				}
+				});
+				},
 	setup: function(frm) {
 		 frm.set_query('paid_to', () => {
 			    return {
@@ -86,7 +117,7 @@ frappe.ui.form.on('CFDI Nota de Credito', {
 				args: {
 					doctype: "Configuracion CFDI",
 					filters: {
-					"name": "Cliente"
+					"name": frm.doc.company
 					}
 				},
 				callback: function (data) {
@@ -136,7 +167,7 @@ frappe.ui.form.on('CFDI Nota de Credito', {
 				args: {
 					doctype: "Configuracion CFDI",
 					filters: {
-						"name": 'Cliente'
+						"name": frm.doc.company
 					}
 				},
 				callback: function (data) {
@@ -166,7 +197,7 @@ frappe.ui.form.on('CFDI Nota de Credito', {
 				args: {
 					doctype: "Configuracion CFDI",
 					filters: {
-						"name": 'Cliente'
+						"name": frm.doc.company
 					}
 				},
 				callback: function (data) {

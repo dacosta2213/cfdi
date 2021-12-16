@@ -1,0 +1,33 @@
+{
+ "chart_name": "VENTAS DE CREDITO POR MES",
+ "chart_type": "Report",
+ "creation": "2021-08-02 11:29:12.444715",
+ "custom_options": "{\"type\": \"line\", \"axisOptions\": {\"shortenYAxisNumbers\": 1}, \"tooltipOptions\": {}, \"lineOptions\": {\"regionFill\": 1}}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2021-08-02 14:12:52.013773",
+ "modified_by": "Administrator",
+ "module": "Cfdi",
+ "name": "VENTAS DE CREDITO POR MES",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "VENTAS A CREDITO POR MES",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Line",
+ "use_report_chart": 0,
+ "x_field": "mes",
+ "y_axis": [
+  {
+   "color": "#EC864B",
+   "y_field": "suma"
+  }
+ ]
+}

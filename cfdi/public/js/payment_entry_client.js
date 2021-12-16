@@ -20,7 +20,7 @@ frappe.ui.form.on("Payment Entry", {
     	args: {
     		doctype: "Configuracion CFDI",
     		filters: {
-    		"name": "Cliente"
+    		"name": frm.doc.company
     		}
     	},
     	callback: function (data) {
@@ -41,20 +41,31 @@ frappe.ui.form.on("Payment Entry", {
     if (frm.doc.party_type === "Customer") {
       $(frm.doc.references).each(function(index){
           frappe.db.get_value('Sales Invoice',this.reference_name,['grand_total','uuid'], (r) => {
-            if(this.total_moneda_original==null){
-              this.total_moneda_original = r.grand_total
-            }
+            this.total_moneda_original = r.grand_total
             this.uuid = r.uuid
       		})
       })
     }
   },
-  after_save: function(frm) {
-    var total_original = 0.0;
-    $(cur_frm.doc.references).each(function(index){
-      total_original = parseFloat(total_original) + parseFloat(this.total_moneda_original);
-    });
-    cur_frm.set_value("gran_total_original", total_original);
+  // on_submit: function(frm) {
+  //   var total_original = 0.0;
+  //   $(cur_frm.doc.references).each(function(index){
+  //     total_original = parseFloat(total_original) + parseFloat(this.total_moneda_original);
+  //   });
+  //   cur_frm.set_value("gran_total_original", total_original);
+  // },
+  after_cancel: function(frm) {
+  		frappe.call({
+      		method: "totall.api.restore_monto_pendiente",
+      		args: 	{
+      				doctype:"Payment Entry",
+                    name: frm.doc.name
+      			},
+      		callback: function(r) {
+      				msgprint(r.message);
+
+      		}
+      	})
   },
   refresh: function(frm) {
 
@@ -63,15 +74,31 @@ frappe.ui.form.on("Payment Entry", {
     $(".btn[data-fieldname=presentar_al_sat]").addClass('btn-success');
   },
   presentar_al_sat: function(frm,dt,dn) {
-    if (frm.doc.__unsaved) {
-      alert("El documento no está guardado.")
-    } else {
+    if (frm.doc.company == 'Luis Angel Garibay Hernandez' || frm.doc.company == 'Sarahi Garibay Gomez') {
+    //   alert("El documento no está guardado.")
+    // } else {
       frappe.call({
   			method: "frappe.client.get",
   			args: {
   				doctype: "Configuracion CFDI",
   				filters: {
-  					"name": "Cliente"
+  					"name": frm.doc.company
+  				}
+  			},
+  			callback: function (data) {
+          console.log('respuesta de Configuracion CFDI: ', data.message)
+        	payment_entry_pago(frm,dn,data.message)
+        }
+      })
+    } else {
+    //   alert("El documento no está guardado.")
+    // } else {
+      frappe.call({
+  			method: "frappe.client.get",
+  			args: {
+  				doctype: "Configuracion CFDI",
+  				filters: {
+  					"name": frm.doc.company
   				}
   			},
   			callback: function (data) {
@@ -128,3 +155,14 @@ var payment_entry_pago = function(frm,dn,v){
     }
   })
 }
+
+
+frappe.ui.form.on("Payment Entry", "onload", function(frm){
+        frm.set_query("reference_name", "references", function(doc, cdt, cdn) {
+            return {
+                "filters": [
+                    ["Sales Invoice", "outstanding_amount", ">", "0"]
+                ]
+            }
+    });
+});

@@ -48,7 +48,8 @@ fixtures = [
 doctype_js = {
     "Sales Invoice" : "public/js/cfdi_sales_invoice.js",
     "Payment Entry" : "public/js/payment_entry_client.js",
-    "CFDI Nota de Credito" : "public/js/cfdi_nota_de_credito.js"
+    "CFDI Nota de Credito" : "public/js/cfdi_nota_de_credito.js",
+    "Delivery Trip" : "public/js/delivery_trip.js"
     }
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}

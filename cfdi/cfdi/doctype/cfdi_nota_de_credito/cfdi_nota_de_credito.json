@@ -1,4 +1,5 @@
 {
+ "actions": [],
  "allow_rename": 1,
  "autoname": "naming_series:",
  "creation": "2018-06-23 00:47:35.162351",
@@ -11,6 +12,7 @@
   "customer_name",
   "tax_id",
   "creado",
+  "posting_date",
   "cvvv",
   "desde_ticket",
   "tipo_documento",
@@ -468,12 +470,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "naming_series",
-   "fieldtype": "Data",
-   "label": "naming series",
-   "options": "NC"
-  },
-  {
    "fieldname": "fechatimbrado",
    "fieldtype": "Data",
    "label": "fechatimbrado"
@@ -542,10 +538,25 @@
    "fieldtype": "Data",
    "label": "Creado el:",
    "read_only": 1
+  },
+  {
+   "default": "NCRE",
+   "fieldname": "naming_series",
+   "fieldtype": "Data",
+   "label": "naming series",
+   "options": "NCRE"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "posting date"
   }
  ],
  "is_submittable": 1,
- "modified": "2021-02-05 11:53:03.529305",
+ "links": [],
+ "modified": "2021-11-29 15:44:33.559765",
  "modified_by": "Administrator",
  "module": "Cfdi",
  "name": "CFDI Nota de Credito",

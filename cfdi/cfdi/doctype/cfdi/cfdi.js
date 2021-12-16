@@ -159,7 +159,7 @@ frappe.ui.form.on('CFDI', {
 				args: {
 					doctype: "Configuracion CFDI",
 					filters: {
-					"name": "Cliente"
+					"name": frm.doc.company
 					}
 				},
 				callback: function (data) {

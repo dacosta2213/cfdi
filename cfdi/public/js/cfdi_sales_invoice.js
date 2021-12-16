@@ -14,7 +14,7 @@ frappe.ui.form.on("Sales Invoice", {
         args: {
           doctype: "Configuracion CFDI",
           filters: {
-          "name": frm.doc.perfil
+          "name": frm.doc.company
           }
         },
         callback: function (data) {
@@ -41,7 +41,7 @@ frappe.ui.form.on("Sales Invoice", {
 			args:{
 				doctype: "Configuracion CFDI",
 				filters: {
-					"name": frm.doc.perfil
+					"name": frm.doc.company
 				}
 			},
 			callback: function(data){
@@ -87,7 +87,7 @@ frappe.ui.form.on("Sales Invoice", {
 			args: {
 				doctype: "Configuracion CFDI",
 				filters: {
-					"name": frm.doc.perfil
+					"name": frm.doc.company
 				}
 			},
 			callback: function (data) {
@@ -101,7 +101,7 @@ frappe.ui.form.on("Sales Invoice", {
 			args: {
 				doctype: "Configuracion CFDI",
 				filters: {
-					"name": frm.doc.perfil
+					"name": frm.doc.company
 				}
 			},
 			callback: function (data) {
