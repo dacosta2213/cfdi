@@ -277,7 +277,7 @@
    "label": "Email", 
    "length": 0, 
    "no_copy": 0, 
-   "options": "customer.email", 
+   "fetch_from": "customer.email", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
