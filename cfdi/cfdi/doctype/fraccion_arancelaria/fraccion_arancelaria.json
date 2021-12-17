@@ -29,7 +29,7 @@
   },
   {
    "fieldname": "descripcion",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "descripcion"
   }
  ],
