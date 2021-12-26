@@ -454,7 +454,7 @@ def genera_xml_pago(docname, url,user_id,user_password,folder,nombre_emisor,no_c
         SerieCFDI = si.naming_series
         FolioCFDI = si.name.replace(SerieCFDI,'')
         MetodoPago = si.metodo_pago
-        ImpSaldoAnt = '%.2f' % x.outstanding_amount
+        ImpSaldoAnt = '%.2f' % x.monto_pendiente
         ImpPagado = '%.2f' % x.pagado
         parc = 0
         frappe.errprint(x.reference_name)
